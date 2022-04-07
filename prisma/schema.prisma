@@ -1,0 +1,32 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+model Week {
+  id   Int   @id @default(autoincrement())
+  days Day[]
+}
+
+model Day {
+  id     Int      @id @default(autoincrement())
+  day    DayNames
+  task   String[]
+  Week   Week?    @relation(fields: [weekId], references: [id])
+  weekId Int?
+}
+
+enum DayNames {
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+  sunday
+}
